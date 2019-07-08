@@ -77,8 +77,6 @@ namespace Nwa45_MusicCenter
             //清除状态栏
             this.toolStripStatusLabel1.Text = "";
 
-            checkList cl = new checkList(checkList.checkType.Insert);
-            cl.ShowDialog();
 
             //保存选中歌曲的索引
             int[] select_result = new int[this.listView1.SelectedIndices.Count];
@@ -88,68 +86,80 @@ namespace Nwa45_MusicCenter
                 select_result[i] = this.listView1.SelectedIndices[i];
             }
 
-            int step = 1;
-            //一首歌曲一首歌曲的操作
-            foreach (int i in select_result)
+            //判断是否选中歌曲
+            if (select_result.Length!=0)
             {
-                this.toolStripStatusLabel1.Text = "正在写入第"+step+"首歌";
-                step++;
+                checkList cl = new checkList(checkList.checkType.Insert);
+                cl.ShowDialog();
 
-                //复制过去的歌曲路径
-                string new_song_path = info.device;
-
-
-                //判断设备有没有这个歌手名字文件夹
-                if (Method.是否存在目录(info.device, this.listView1.Items[i].SubItems[1].Text) == true)
+                int step = 1;
+                //一首歌曲一首歌曲的操作
+                foreach (int i in select_result)
                 {
-                    new_song_path += "\\" + this.listView1.Items[i].SubItems[1].Text;
-                }
-                else
-                {
-                    new_song_path += "\\" + this.listView1.Items[i].SubItems[1].Text;
-                    Directory.CreateDirectory(new_song_path);
-                }
-                //判断设备有没有这个歌手的专辑文件夹
-                if ((Method.是否存在目录(new_song_path, this.listView1.Items[i].SubItems[2].Text) == true))
-                {
-                    new_song_path += "\\" + this.listView1.Items[i].SubItems[2].Text;
-                }
-                else
-                {
-                    new_song_path += "\\" + this.listView1.Items[i].SubItems[2].Text;
-                    Directory.CreateDirectory(new_song_path);
+                    this.toolStripStatusLabel1.Text = "正在写入第" + step + "首歌";
+                    step++;
+
+                    //复制过去的歌曲路径
+                    string new_song_path = info.device;
+
+
+                    //判断设备有没有这个歌手名字文件夹
+                    if (Method.是否存在目录(info.device, this.listView1.Items[i].SubItems[1].Text) == true)
+                    {
+                        new_song_path += "\\" + this.listView1.Items[i].SubItems[1].Text;
+                    }
+                    else
+                    {
+                        new_song_path += "\\" + this.listView1.Items[i].SubItems[1].Text;
+                        Directory.CreateDirectory(new_song_path);
+                    }
+                    //判断设备有没有这个歌手的专辑文件夹
+                    if ((Method.是否存在目录(new_song_path, this.listView1.Items[i].SubItems[2].Text) == true))
+                    {
+                        new_song_path += "\\" + this.listView1.Items[i].SubItems[2].Text;
+                    }
+                    else
+                    {
+                        new_song_path += "\\" + this.listView1.Items[i].SubItems[2].Text;
+                        Directory.CreateDirectory(new_song_path);
+                    }
+
+                    //保存移动后文件路径
+                    string move_song_path = new_song_path + "\\" + Path.GetFileName(info.songs_path[i]);
+
+                    //把歌曲复制到相应的位置
+                    try
+                    {
+                        Method.复制(info.songs_path[i], move_song_path);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("复制失败");
+                        return;
+                    }
+
+                    //MessageBox.Show(Method.获取歌曲信息(info.songs_path[i])[3]);
+                    //获取歌曲时间
+                    string[] song_time = Method.获取歌曲信息(info.songs_path[i])[3].Split(':');
+                    time t = new time(0, int.Parse(song_time[0]), int.Parse(song_time[1]), int.Parse(song_time[2]));
+                    double song_second = t.getsecond();
+
+                    //写入歌单
+                    StreamWriter sw = new StreamWriter(info.song_list_path[info.select_songs], true);
+                    sw.WriteLine(String.Format("#EXTINF:{0},{1}", song_second,Method.获取歌曲信息(info.songs_path[i])[0]));
+                    sw.WriteLine(move_song_path.Substring(9));
+                    sw.Close();
+
                 }
 
-                //保存移动后文件路径
-                string move_song_path = new_song_path + "\\" + Path.GetFileName(info.songs_path[i]);
-
-                //把歌曲复制到相应的位置
-                try
-                {
-                    Method.复制(info.songs_path[i], move_song_path);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("复制失败");
-                    return;
-                }
-
-                //MessageBox.Show(Method.获取歌曲信息(info.songs_path[i])[3]);
-                //获取歌曲时间
-                string [] song_time = Method.获取歌曲信息(info.songs_path[i])[3].Split(':');
-                time t = new time(0,int.Parse(song_time[0]), int.Parse(song_time[1]), int.Parse(song_time[2]));
-                double song_second = t.getsecond();
-
-                //写入歌单
-                StreamWriter sw = new StreamWriter(info.song_list_path[info.select_songs], true);
-                sw.WriteLine(String.Format("#EXTINF:{0},{1}",song_second, Path.GetFileNameWithoutExtension(info.songs_path[i])));
-                sw.WriteLine(move_song_path.Substring(9));
-                sw.Close();
-                
-                
+                this.toolStripStatusLabel1.Text = "写入成功！";
+            }
+            else
+            {
+                MessageBox.Show("你还没有选");
             }
 
-            this.toolStripStatusLabel1.Text = "写入成功！";
+            
         }
 
         //菜单栏添加设备窗口

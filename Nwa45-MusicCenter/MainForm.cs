@@ -77,7 +77,7 @@ namespace Nwa45_MusicCenter
             //清除状态栏
             this.toolStripStatusLabel1.Text = "";
 
-            checkList cl = new checkList();
+            checkList cl = new checkList(checkList.checkType.Insert);
             cl.ShowDialog();
 
             //保存选中歌曲的索引
@@ -212,6 +212,13 @@ namespace Nwa45_MusicCenter
             }
 
             return result;
+        }
+
+        //删除歌单
+        private void button5_Click(object sender, EventArgs e)
+        {
+            checkList f = new checkList(checkList.checkType.Delete);
+            f.ShowDialog();
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Nwa45_MusicCenter
         public static List<string> song_list_path = new List<string>();       //歌单路径
         public static List<string> songs_path = new List<string>();          //要导入的歌曲路径
         public static int select_songs;       //选中的歌单索引
+        
     }
 }

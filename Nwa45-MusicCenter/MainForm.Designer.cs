@@ -43,6 +43,7 @@
             this.设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.添加设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -164,11 +165,22 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(257, 486);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(103, 31);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "删除歌单";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(372, 577);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -207,6 +219,7 @@
         private System.Windows.Forms.ToolStripMenuItem 设备ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 添加设备ToolStripMenuItem;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
 

@@ -40,7 +40,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(101, 12);
             this.label1.TabIndex = 0;
-            this.label1.Text = "请选择导入的歌单";
+            this.label1.Text = "请选择操作的歌单";
             // 
             // comboBox1
             // 

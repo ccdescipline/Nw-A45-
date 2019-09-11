@@ -65,6 +65,11 @@ namespace Nwa45_MusicCenter
                     //删除歌单文件
                     File.Delete(info.song_list_path[this.comboBox1.SelectedIndex]);
                     MessageBox.Show("删除成功！");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("删除失败！");
                 }
             }
             
